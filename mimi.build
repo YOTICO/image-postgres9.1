@@ -1,0 +1,27 @@
+template mimi-ubuntu-86
+
+run add-apt-repository -y ppa:ubuntugis/ppa
+run apt-get update
+run DEBIAN_FRONTEND=noninteractive apt-get install -yq \
+    postgis \
+    postgresql-9.1 \
+    postgresql-server-dev-9.1 \
+    postgresql-contrib-9.1 \
+    postgis \
+    gdal-bin \
+    binutils \
+    libgeos-3.2.2 \
+    libgeos-c1 \
+    libgeos-dev \
+    libgdal1-dev \
+    libxml2 \
+    libxml2-dev \
+    libxml2-dev \
+    checkinstall \
+    proj \
+    libpq-dev
+run echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.1/main/pg_hba.conf
+run echo "listen_addresses='*'" >> /etc/postgresql/9.1/main/postgresql.conf
+
+run service postgresql start
+run su -l postgres -c "psql --command \"CREATE USER docker WITH SUPERUSER PASSWORD 'docker';\""
